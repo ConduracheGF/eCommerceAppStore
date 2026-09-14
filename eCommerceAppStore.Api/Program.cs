@@ -19,6 +19,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<eCommerceAppStore.Api.Middleware.ExceptionMiddleware>();
+
 app.UseAuthorization();
 app.MapControllers();
 
