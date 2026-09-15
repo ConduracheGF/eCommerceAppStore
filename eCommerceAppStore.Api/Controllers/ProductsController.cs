@@ -18,9 +18,50 @@ public class ProductsController : ControllerBase
 
     // GET: api/products
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+    public async Task<ActionResult<IEnumerable<Product>>> GetProducts(
+        [FromQuery] string? search,
+        [FromQuery] decimal? minPrice,
+        [FromQuery] decimal? maxPrice,
+        [FromQuery] bool? inStock,
+        [FromQuery] string? sortBy
+        )
     {
-        return await _context.Products.ToListAsync();
+        // SEARCH
+        // interogari pe coada
+        var query = _context.Products.AsQueryable();
+
+        // cautare dupa nume sau descriere
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            query = query.Where(p => p.Name.Contains(search));
+        }
+
+        // FILTER
+        if (minPrice.HasValue)
+        {
+            query = query.Where(p => p.Price >= minPrice.Value); ;
+        }
+
+        if (maxPrice.HasValue)
+        {
+            query = query.Where(p => p.Price <= maxPrice.Value);
+        }
+
+        if (inStock.HasValue && inStock.Value)
+        {
+            query = query.Where(p => p.Stock > 0);
+        }
+
+        // SORT
+        query = sortBy switch
+        {
+            "price_asc" => query.OrderBy(p => p.Price),
+            "price_desc" => query.OrderByDescending(p => p.Price),
+            "name_desc" => query.OrderByDescending(p => p.Name),
+            _ => query.OrderBy(p => p.Name)
+        };
+
+        return await query.ToListAsync();
     }
 
     // GET: api/products/{id}
