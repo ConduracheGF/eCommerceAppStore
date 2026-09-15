@@ -23,7 +23,9 @@ public class ProductsController : ControllerBase
         [FromQuery] decimal? minPrice,
         [FromQuery] decimal? maxPrice,
         [FromQuery] bool? inStock,
-        [FromQuery] string? sortBy
+        [FromQuery] string? sortBy,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10
         )
     {
         // SEARCH
@@ -60,6 +62,8 @@ public class ProductsController : ControllerBase
             "name_desc" => query.OrderByDescending(p => p.Name),
             _ => query.OrderBy(p => p.Name)
         };
+
+        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
         return await query.ToListAsync();
     }
