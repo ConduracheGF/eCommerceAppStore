@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("eCommerceAppStore.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fec4b4b85df1d3ea276ccddf1dd95bf826a7b0a8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fb261b1c21d63bd2ca6011ce492c648b3e00e1bc")]
 [assembly: System.Reflection.AssemblyProductAttribute("eCommerceAppStore.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("eCommerceAppStore.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
