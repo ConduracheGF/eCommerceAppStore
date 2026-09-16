@@ -1,0 +1,16 @@
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\obj\Debug\net10.0-windows\eCommerceAppStore.WinForms.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\obj\Debug\net10.0-windows\eCommerceAppStore.WinForms.AssemblyInfoInputs.cache
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\obj\Debug\net10.0-windows\eCommerceAppStore.WinForms.AssemblyInfo.cs
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\obj\Debug\net10.0-windows\eCommerceAppStore.WinForms.csproj.CoreCompileInputs.cache
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\obj\Debug\net10.0-windows\eCommerceAppStore.WinForms.sourcelink.json
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\bin\Debug\net10.0-windows\eCommerceAppStore.WinForms.exe
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\bin\Debug\net10.0-windows\eCommerceAppStore.WinForms.deps.json
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\bin\Debug\net10.0-windows\eCommerceAppStore.WinForms.runtimeconfig.json
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\bin\Debug\net10.0-windows\eCommerceAppStore.WinForms.dll
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\bin\Debug\net10.0-windows\eCommerceAppStore.WinForms.pdb
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\obj\Debug\net10.0-windows\eCommerceAppStore.WinForms.dll
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\obj\Debug\net10.0-windows\refint\eCommerceAppStore.WinForms.dll
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\obj\Debug\net10.0-windows\eCommerceAppStore.WinForms.pdb
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\obj\Debug\net10.0-windows\eCommerceAppStore.WinForms.genruntimeconfig.cache
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\obj\Debug\net10.0-windows\ref\eCommerceAppStore.WinForms.dll
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.WinForms\obj\Debug\net10.0-windows\eCommerc.01D3FFED.Up2Date

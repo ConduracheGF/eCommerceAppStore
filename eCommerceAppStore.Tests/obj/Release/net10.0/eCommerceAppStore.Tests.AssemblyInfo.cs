@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("eCommerceAppStore.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f3d5d182292d4fa03003aa035528d0f5cebec8ba")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+83cb988fed4614be2d8f55a3221321e80506d698")]
 [assembly: System.Reflection.AssemblyProductAttribute("eCommerceAppStore.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("eCommerceAppStore.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
