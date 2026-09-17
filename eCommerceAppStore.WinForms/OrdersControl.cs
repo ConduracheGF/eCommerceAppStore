@@ -1,11 +1,13 @@
 using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace eCommerceAppStore.WinForms;
 
 public class OrdersControl : UserControl
 {
+    private readonly ApiService _apiService = new();
     public DataGridView DgvOrders { get; private set; } = null!;
 
     public OrdersControl()
@@ -32,6 +34,7 @@ public class OrdersControl : UserControl
             GridColor = Color.FromArgb(50, 50, 75),
             SelectionMode = DataGridViewSelectionMode.FullRowSelect,
             ReadOnly = true,
+            AllowUserToAddRows = false,
             RowHeadersVisible = false,
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
             EnableHeadersVisualStyles = false
@@ -54,12 +57,24 @@ public class OrdersControl : UserControl
         DgvOrders.Columns.Add("Id", "ID Comandă");
         DgvOrders.Columns.Add("Customer", "Email Client");
         DgvOrders.Columns.Add("Total", "Total (RON)");
-        DgvOrders.Columns.Add("Status", "Status");
+        DgvOrders.Columns.Add("Date", "Data Creării");
 
-        DgvOrders.Rows.Add(1042, "client@email.com", 2400.00, "Procesată");
-        DgvOrders.Rows.Add(1043, "popescu@test.ro", 450.00, "În Așteptare");
+        DgvOrders.Columns["Total"].DefaultCellStyle.Format = "N2";
 
         Controls.Add(DgvOrders);
         Controls.Add(lblTitle);
+
+        Load += async (s, e) => await LoadOrdersAsync();
+    }
+
+    private async Task LoadOrdersAsync()
+    {
+        var orders = await _apiService.GetOrdersAsync();
+        DgvOrders.Rows.Clear();
+
+        foreach (var o in orders)
+        {
+            DgvOrders.Rows.Add(o.Id, o.CustomerEmail, o.TotalAmount, o.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm"));
+        }
     }
 }

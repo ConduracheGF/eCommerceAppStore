@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace eCommerceAppStore.WinForms;
@@ -14,6 +15,8 @@ public class ProductsControl : UserControl
     private readonly Color _accentBlue = Color.FromArgb(52, 152, 219);
     private readonly Color _accentGreen = Color.FromArgb(46, 204, 113);
     private readonly Color _accentRed = Color.FromArgb(231, 76, 60);
+
+    private readonly ApiService _apiService = new();
 
     public TextBox TxtSearch { get; private set; } = null!;
     public Button BtnNewProduct { get; private set; } = null!;
@@ -49,6 +52,7 @@ public class ProductsControl : UserControl
             BorderStyle = BorderStyle.FixedSingle,
             PlaceholderText = "🔍 Caută produs..."
         };
+        TxtSearch.KeyDown += async (s, e) => { if (e.KeyCode == Keys.Enter) await LoadDataAsync(); };
 
         var btnFilter = new Button
         {
@@ -62,6 +66,7 @@ public class ProductsControl : UserControl
             Cursor = Cursors.Hand
         };
         btnFilter.FlatAppearance.BorderSize = 0;
+        btnFilter.Click += async (s, e) => await LoadDataAsync();
 
         BtnNewProduct = new Button
         {
@@ -76,6 +81,7 @@ public class ProductsControl : UserControl
             Cursor = Cursors.Hand
         };
         BtnNewProduct.FlatAppearance.BorderSize = 0;
+        BtnNewProduct.Click += async (s, e) => await AddProductAsync();
 
         pnlFilters.Controls.Add(TxtSearch);
         pnlFilters.Controls.Add(btnFilter);
@@ -103,7 +109,6 @@ public class ProductsControl : UserControl
         DgvProducts.ColumnHeadersDefaultCellStyle.SelectionBackColor = _bgHeader;
         DgvProducts.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(180, 180, 200);
         DgvProducts.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-        DgvProducts.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
         DgvProducts.RowTemplate.Height = 38;
         DgvProducts.DefaultCellStyle.BackColor = _bgDark;
@@ -165,12 +170,84 @@ public class ProductsControl : UserControl
             }
         };
 
-        DgvProducts.Rows.Add(1, "Monitor Gaming 27\"", 1200.00, 3);
-        DgvProducts.Rows.Add(2, "Tastatură Mecanică", 450.00, 12);
-        DgvProducts.Rows.Add(3, "Mouse Wireless", 210.00, 0);
+        DgvProducts.CellContentClick += async (sender, e) => await HandleGridActionAsync(e);
 
         Controls.Add(DgvProducts);
         Controls.Add(pnlFilters);
         Controls.Add(lblTitle);
+
+        Load += async (s, e) => await LoadDataAsync();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        var products = await _apiService.GetProductsAsync(TxtSearch.Text.Trim());
+        DgvProducts.Rows.Clear();
+
+        foreach (var p in products)
+        {
+            DgvProducts.Rows.Add(p.Id, p.Name, p.Price, p.Stock);
+        }
+    }
+
+    private async Task AddProductAsync()
+    {
+        using var form = new ProductForm();
+        if (form.ShowDialog() == DialogResult.OK)
+        {
+            var (success, error) = await _apiService.CreateProductAsync(form.ProductData);
+            if (success)
+            {
+                await LoadDataAsync();
+            }
+            else
+            {
+                MessageBox.Show($"Eroare la salvarea produsului:\n{error}", "Eroare Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+
+    private async Task HandleGridActionAsync(DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex < 0) return;
+
+        int id = Convert.ToInt32(DgvProducts.Rows[e.RowIndex].Cells["Id"].Value);
+        string name = DgvProducts.Rows[e.RowIndex].Cells["Name"].Value?.ToString() ?? "";
+        decimal price = Convert.ToDecimal(DgvProducts.Rows[e.RowIndex].Cells["Price"].Value);
+        int stock = Convert.ToInt32(DgvProducts.Rows[e.RowIndex].Cells["Stock"].Value);
+
+        if (e.ColumnIndex == DgvProducts.Columns["Edit"].Index)
+        {
+            var product = new ProductDto { Id = id, Name = name, Price = price, Stock = stock };
+            using var form = new ProductForm(product);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                var (success, error) = await _apiService.UpdateProductAsync(id, form.ProductData);
+                if (success)
+                {
+                    await LoadDataAsync();
+                }
+                else
+                {
+                    MessageBox.Show($"Eroare la actualizarea produsului:\n{error}", "Eroare Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+        else if (e.ColumnIndex == DgvProducts.Columns["Delete"].Index)
+        {
+            var confirm = MessageBox.Show($"Sigur dorești să ștergi produsul '{name}'?", "Confirmare", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirm == DialogResult.Yes)
+            {
+                var (success, error) = await _apiService.DeleteProductAsync(id);
+                if (success)
+                {
+                    await LoadDataAsync();
+                }
+                else
+                {
+                    MessageBox.Show($"Eroare la ștergerea produsului:\n{error}", "Eroare Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }

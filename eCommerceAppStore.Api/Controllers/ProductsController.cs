@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using eCommerceAppStore.Api.Data;
 
-// CRUD operations for products and orders can be implemented in this controller. For example, you can add methods to get all products, get a product by ID, create a new product, update an existing product, and delete a product. Similarly, you can implement CRUD operations for orders
 namespace eCommerceAppStore.Api.Controllers;
 
 [ApiController]
@@ -17,7 +16,6 @@ public class ProductsController : ControllerBase
         _context = context;
     }
 
-    // GET: api/products
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Product>>> GetProducts(
         [FromQuery] string? search,
@@ -29,20 +27,16 @@ public class ProductsController : ControllerBase
         [FromQuery] int pageSize = 10
         )
     {
-        // SEARCH
-        // interogari pe coada
         var query = _context.Products.AsQueryable();
 
-        // cautare dupa nume sau descriere
         if (!string.IsNullOrWhiteSpace(search))
         {
             query = query.Where(p => p.Name.Contains(search));
         }
 
-        // FILTER
         if (minPrice.HasValue)
         {
-            query = query.Where(p => p.Price >= minPrice.Value); ;
+            query = query.Where(p => p.Price >= minPrice.Value);
         }
 
         if (maxPrice.HasValue)
@@ -55,7 +49,6 @@ public class ProductsController : ControllerBase
             query = query.Where(p => p.Stock > 0);
         }
 
-        // SORT
         query = sortBy switch
         {
             "price_asc" => query.OrderBy(p => p.Price),
@@ -69,7 +62,6 @@ public class ProductsController : ControllerBase
         return await query.ToListAsync();
     }
 
-    // GET: api/products/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<Product>> GetProduct(int id)
     {
@@ -78,9 +70,8 @@ public class ProductsController : ControllerBase
         return product;
     }
 
-    // POST: api/products
     [HttpPost]
-    [Authorize]
+    // [Authorize]
     public async Task<ActionResult<Product>> CreateProduct(Product product)
     {
         _context.Products.Add(product);
@@ -88,9 +79,8 @@ public class ProductsController : ControllerBase
         return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
     }
 
-    // PUT: api/products/{id}
     [HttpPut("{id}")]
-    [Authorize]
+    // [Authorize]
     public async Task<IActionResult> UpdateProduct(int id, Product product)
     {
         if (id != product.Id)
@@ -112,9 +102,8 @@ public class ProductsController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/products/{id}
     [HttpDelete("{id}")]
-    [Authorize]
+    // [Authorize]
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var product = await _context.Products.FindAsync(id);
