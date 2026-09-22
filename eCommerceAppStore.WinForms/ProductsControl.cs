@@ -124,8 +124,8 @@ public class ProductsControl : UserControl
         DgvProducts.Columns.Add("Price", "Preț (RON)");
         DgvProducts.Columns.Add("Stock", "Stoc");
 
-        DgvProducts.Columns["Id"].Width = 60;
-        DgvProducts.Columns["Price"].DefaultCellStyle.Format = "N2";
+        if (DgvProducts.Columns["Id"] != null) DgvProducts.Columns["Id"]!.Width = 60;
+        if (DgvProducts.Columns["Price"] != null) DgvProducts.Columns["Price"]!.DefaultCellStyle.Format = "N2";
 
         var btnEditCol = new DataGridViewButtonColumn
         {
@@ -150,11 +150,14 @@ public class ProductsControl : UserControl
 
         DgvProducts.CellPainting += (sender, e) =>
         {
-            if (e.RowIndex >= 0 && (e.ColumnIndex == DgvProducts.Columns["Edit"].Index || e.ColumnIndex == DgvProducts.Columns["Delete"].Index))
+            var colEdit = DgvProducts.Columns["Edit"];
+            var colDelete = DgvProducts.Columns["Delete"];
+
+            if (colEdit != null && colDelete != null && e.RowIndex >= 0 && (e.ColumnIndex == colEdit.Index || e.ColumnIndex == colDelete.Index))
             {
                 e.Paint(e.CellBounds, DataGridViewPaintParts.All & ~DataGridViewPaintParts.ContentForeground);
 
-                bool isEdit = e.ColumnIndex == DgvProducts.Columns["Edit"].Index;
+                bool isEdit = e.ColumnIndex == colEdit.Index;
                 Color btnColor = isEdit ? _accentBlue : _accentRed;
                 string btnText = isEdit ? "Editează" : "Șterge";
 
@@ -164,7 +167,7 @@ public class ProductsControl : UserControl
                     e.Graphics.FillRectangle(brush, buttonRect);
                 }
 
-                TextRenderer.DrawText(e.Graphics, btnText, DgvProducts.Font, buttonRect, Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                TextRenderer.DrawText(e.Graphics, btnText, DgvProducts.Font ?? Font, buttonRect, Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
 
                 e.Handled = true;
             }
@@ -216,7 +219,10 @@ public class ProductsControl : UserControl
         decimal price = Convert.ToDecimal(DgvProducts.Rows[e.RowIndex].Cells["Price"].Value);
         int stock = Convert.ToInt32(DgvProducts.Rows[e.RowIndex].Cells["Stock"].Value);
 
-        if (e.ColumnIndex == DgvProducts.Columns["Edit"].Index)
+        var colEdit = DgvProducts.Columns["Edit"];
+        var colDelete = DgvProducts.Columns["Delete"];
+
+        if (colEdit != null && e.ColumnIndex == colEdit.Index)
         {
             var product = new ProductDto { Id = id, Name = name, Price = price, Stock = stock };
             using var form = new ProductForm(product);
@@ -233,7 +239,7 @@ public class ProductsControl : UserControl
                 }
             }
         }
-        else if (e.ColumnIndex == DgvProducts.Columns["Delete"].Index)
+        else if (colDelete != null && e.ColumnIndex == colDelete.Index)
         {
             var confirm = MessageBox.Show($"Sigur dorești să ștergi produsul '{name}'?", "Confirmare", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirm == DialogResult.Yes)

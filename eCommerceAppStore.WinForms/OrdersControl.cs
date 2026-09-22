@@ -59,7 +59,10 @@ public class OrdersControl : UserControl
         DgvOrders.Columns.Add("Total", "Total (RON)");
         DgvOrders.Columns.Add("Date", "Data Creării");
 
-        DgvOrders.Columns["Total"].DefaultCellStyle.Format = "N2";
+        if (DgvOrders.Columns["Total"] != null)
+        {
+            DgvOrders.Columns["Total"]!.DefaultCellStyle.Format = "N2";
+        }
 
         Controls.Add(DgvOrders);
         Controls.Add(lblTitle);
