@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("eCommerceAppStore.WinForms")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8a5c337e3c6cfb69c028b25d823a219ad08d7d8b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9da8542e490903f3ad8d463b181ef5da7a6dcfce")]
 [assembly: System.Reflection.AssemblyProductAttribute("eCommerceAppStore.WinForms")]
 [assembly: System.Reflection.AssemblyTitleAttribute("eCommerceAppStore.WinForms")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

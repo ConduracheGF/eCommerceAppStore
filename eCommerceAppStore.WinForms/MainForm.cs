@@ -81,6 +81,23 @@ public partial class MainForm : Form
         var btnNavReports = CreateNavButton("📊  Rapoarte");
         var btnNavSettings = CreateNavButton("⚙️  Setări");
 
+        var btnLogout = new Button
+        {
+            Text = "🚪 Deconectare",
+            Dock = DockStyle.Bottom,
+            Height = 40,
+            FlatStyle = FlatStyle.Flat,
+            TextAlign = ContentAlignment.MiddleLeft,
+            Padding = new Padding(10, 0, 0, 0),
+            ForeColor = Color.FromArgb(231, 76, 60),
+            BackColor = _bgSidebar,
+            Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+            Cursor = Cursors.Hand
+        };
+        btnLogout.FlatAppearance.BorderSize = 0;
+        btnLogout.Click += (s, e) => Close();
+
+        pnlSidebar.Controls.Add(btnLogout);
         pnlSidebar.Controls.Add(btnNavSettings);
         pnlSidebar.Controls.Add(btnNavReports);
         pnlSidebar.Controls.Add(btnNavOrders);

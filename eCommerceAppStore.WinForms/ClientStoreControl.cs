@@ -31,14 +31,38 @@ public class ClientStoreControl : UserControl
 
     private void BuildUi()
     {
-        var lblTitle = new Label
+        var pnlHeader = new Panel
         {
-            Text = $"MAGAZIN ONLINE - Autentificat ca: {_clientEmail}",
-            Font = new Font("Segoe UI", 13F, FontStyle.Bold),
-            ForeColor = Color.White,
             Dock = DockStyle.Top,
             Height = 40
         };
+
+        var lblTitle = new Label
+        {
+            Text = $"MAGAZIN ONLINE - Autentificat ca: {_clientEmail}",
+            Font = new Font("Segoe UI", 12F, FontStyle.Bold),
+            ForeColor = Color.White,
+            Dock = DockStyle.Left,
+            AutoSize = true
+        };
+
+        var btnLogout = new Button
+        {
+            Text = "🚪 Deconectare",
+            Dock = DockStyle.Right,
+            Width = 130,
+            Height = 32,
+            BackColor = Color.FromArgb(231, 76, 60),
+            ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat,
+            Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+            Cursor = Cursors.Hand
+        };
+        btnLogout.FlatAppearance.BorderSize = 0;
+        btnLogout.Click += (s, e) => ParentForm?.Close();
+
+        pnlHeader.Controls.Add(lblTitle);
+        pnlHeader.Controls.Add(btnLogout);
 
         var pnlOrder = new Panel
         {
@@ -132,12 +156,16 @@ public class ClientStoreControl : UserControl
         DgvProducts.Columns.Add("Price", "Preț Unitari (RON)");
         DgvProducts.Columns.Add("Stock", "Stoc Disponibil");
 
-        DgvProducts.Columns["Price"].DefaultCellStyle.Format = "N2";
+        if (DgvProducts.Columns["Price"] != null)
+        {
+            DgvProducts.Columns["Price"]!.DefaultCellStyle.Format = "N2";
+        }
+
         DgvProducts.SelectionChanged += (s, e) => OnProductSelected();
 
         Controls.Add(DgvProducts);
         Controls.Add(pnlOrder);
-        Controls.Add(lblTitle);
+        Controls.Add(pnlHeader);
     }
 
     private async Task LoadAvailableProductsAsync()
@@ -159,10 +187,10 @@ public class ClientStoreControl : UserControl
         var row = DgvProducts.SelectedRows[0];
         _selectedProduct = new ProductDto
         {
-            Id = Convert.ToInt32(row.Cells["Id"].Value),
-            Name = row.Cells["Name"].Value?.ToString() ?? "",
-            Price = Convert.ToDecimal(row.Cells["Price"].Value),
-            Stock = Convert.ToInt32(row.Cells["Stock"].Value)
+            Id = Convert.ToInt32(row.Cells["Id"]?.Value ?? 0),
+            Name = row.Cells["Name"]?.Value?.ToString() ?? "",
+            Price = Convert.ToDecimal(row.Cells["Price"]?.Value ?? 0),
+            Stock = Convert.ToInt32(row.Cells["Stock"]?.Value ?? 0)
         };
 
         _lblSelectedProduct.Text = $"Selectat: {_selectedProduct.Name}";

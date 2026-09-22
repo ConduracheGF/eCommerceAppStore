@@ -125,9 +125,9 @@ public class ApiService
             string err = await response.Content.ReadAsStringAsync();
             return (false, $"Status {(int)response.StatusCode}: {err}");
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            return (false, e.Message);
+            return (false, ex.Message);
         }
     }
 }
