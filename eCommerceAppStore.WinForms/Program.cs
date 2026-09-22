@@ -1,16 +1,39 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
 namespace eCommerceAppStore.WinForms;
 
 static class Program
 {
-    /// <summary>
-    ///  The main entry point for the application.
-    /// </summary>
     [STAThread]
     static void Main()
     {
-        // To customize application configuration such as set high DPI settings or default font,
-        // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
-        Application.Run(new MainForm());
-    }    
+
+        using var loginForm = new LoginForm();
+        if (loginForm.ShowDialog() == DialogResult.OK)
+        {
+            if (loginForm.SelectedRole == UserRole.Admin)
+            {
+                // Deschide panoul de administrare
+                Application.Run(new MainForm());
+            }
+            else
+            {
+                // Declarare și inițializare corectă a variabilei clientForm
+                var clientForm = new Form
+                {
+                    Text = "Store Client - Cumpărături Online",
+                    Size = new Size(900, 600),
+                    StartPosition = FormStartPosition.CenterScreen,
+                    BackColor = Color.FromArgb(30, 30, 46)
+                };
+
+                clientForm.Controls.Add(new ClientStoreControl(loginForm.UserEmail));
+
+                Application.Run(clientForm);
+            }
+        }
+    }
 }

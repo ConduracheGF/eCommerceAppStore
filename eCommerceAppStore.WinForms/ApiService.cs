@@ -114,4 +114,20 @@ public class ApiService
             return new List<OrderDto>();
         }
     }
+
+    public async Task<(bool Success, string ErrorMessage)> CreateOrderAsync(CreateOrderDto order)
+    {
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/orders", order);
+            if (response.IsSuccessStatusCode) return (true, string.Empty);
+
+            string err = await response.Content.ReadAsStringAsync();
+            return (false, $"Status {(int)response.StatusCode}: {err}");
+        }
+        catch (Exception e)
+        {
+            return (false, e.Message);
+        }
+    }
 }
