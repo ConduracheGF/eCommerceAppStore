@@ -1,28 +1,37 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using eCommerceAppStore.Api.DataTransferObject;
 
 namespace eCommerceAppStore.WinForms;
 
-public enum UserRole { Admin, Client }
+public enum AccessMode { Admin, ClientAuthenticated, Guest }
 
 public class LoginForm : Form
 {
-    public UserRole SelectedRole { get; private set; } = UserRole.Client;
+    private readonly ApiService _apiService = new();
+
+    public AccessMode Mode { get; private set; } = AccessMode.Guest;
     public string UserEmail { get; private set; } = string.Empty;
 
-    private ComboBox _cboRole = null!;
-    private TextBox _txtEmail = null!;
-    private TextBox _txtPassword = null!;
+    private TabControl _tabControl = null!;
+
+    // Controale Login
+    private TextBox _txtLoginEmail = null!;
+    private TextBox _txtLoginPassword = null!;
+
+    // Controale Register
+    private TextBox _txtRegName = null!;
+    private TextBox _txtRegEmail = null!;
+    private TextBox _txtRegPassword = null!;
 
     public LoginForm()
     {
-        Text = "Autentificare Store Manager";
-        Size = new Size(380, 360);
+        Text = "Autentificare / Înregistrare Magazin";
+        Size = new Size(420, 450);
         StartPosition = FormStartPosition.CenterScreen;
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
-        MinimizeBox = false;
         BackColor = Color.FromArgb(30, 30, 46);
         ForeColor = Color.White;
         Font = new Font("Segoe UI", 9.5F);
@@ -32,107 +41,133 @@ public class LoginForm : Form
 
     private void BuildUi()
     {
-        var lblTitle = new Label
-        {
-            Text = "AUTENTIFICARE",
-            Font = new Font("Segoe UI", 14F, FontStyle.Bold),
-            ForeColor = Color.White,
-            Location = new Point(20, 20),
-            AutoSize = true
-        };
+        _tabControl = new TabControl { Dock = DockStyle.Top, Height = 320 };
 
-        var lblRole = new Label { Text = "Tip Cont / Rol:", Location = new Point(20, 65), AutoSize = true, ForeColor = Color.LightGray };
-        _cboRole = new ComboBox
-        {
-            Location = new Point(20, 90),
-            Width = 320,
-            DropDownStyle = ComboBoxStyle.DropDownList,
-            BackColor = Color.FromArgb(40, 40, 60),
-            ForeColor = Color.White,
-            FlatStyle = FlatStyle.Flat
-        };
-        _cboRole.Items.Add("Client (Cumpărături)");
-        _cboRole.Items.Add("Administrator (Gestiune)");
-        _cboRole.SelectedIndex = 0;
-        _cboRole.SelectedIndexChanged += (s, e) =>
-        {
-            bool isAdmin = _cboRole.SelectedIndex == 1;
-            _txtPassword.Enabled = isAdmin;
-            _txtPassword.BackColor = isAdmin ? Color.FromArgb(40, 40, 60) : Color.FromArgb(25, 25, 35);
-        };
+        // --- TAB 1: LOGIN ---
+        var tabLogin = new TabPage("Autentificare");
+        tabLogin.BackColor = Color.FromArgb(35, 35, 52);
 
-        var lblEmail = new Label { Text = "Email Utilizator:", Location = new Point(20, 130), AutoSize = true, ForeColor = Color.LightGray };
-        _txtEmail = new TextBox
-        {
-            Location = new Point(20, 155),
-            Width = 320,
-            BackColor = Color.FromArgb(40, 40, 60),
-            ForeColor = Color.White,
-            BorderStyle = BorderStyle.FixedSingle,
-            Text = "client@magazin.ro"
-        };
+        var lblLName = new Label { Text = "Email:", Location = new Point(20, 20), AutoSize = true, ForeColor = Color.LightGray };
+        _txtLoginEmail = new TextBox { Location = new Point(20, 45), Width = 340, BackColor = Color.FromArgb(50, 50, 70), ForeColor = Color.White };
 
-        var lblPassword = new Label { Text = "Parolă Admin (Implicit: admin):", Location = new Point(20, 195), AutoSize = true, ForeColor = Color.LightGray };
-        _txtPassword = new TextBox
-        {
-            Location = new Point(20, 220),
-            Width = 320,
-            PasswordChar = '•',
-            Enabled = false,
-            BackColor = Color.FromArgb(25, 25, 35),
-            ForeColor = Color.White,
-            BorderStyle = BorderStyle.FixedSingle
-        };
+        var lblLPass = new Label { Text = "Parolă:", Location = new Point(20, 85), AutoSize = true, ForeColor = Color.LightGray };
+        _txtLoginPassword = new TextBox { Location = new Point(20, 110), Width = 340, PasswordChar = '•', BackColor = Color.FromArgb(50, 50, 70), ForeColor = Color.White };
 
         var btnLogin = new Button
         {
-            Text = "Intră în Aplicație",
-            Location = new Point(20, 265),
-            Width = 320,
-            Height = 38,
+            Text = "Intră în cont",
+            Location = new Point(20, 160),
+            Width = 340,
+            Height = 40,
             BackColor = Color.FromArgb(52, 152, 219),
+            ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat,
+            Font = new Font("Segoe UI", 10F, FontStyle.Bold)
+        };
+        btnLogin.Click += async (s, e) => await ExecuteLoginAsync();
+
+        tabLogin.Controls.Add(lblLName);
+        tabLogin.Controls.Add(_txtLoginEmail);
+        tabLogin.Controls.Add(lblLPass);
+        tabLogin.Controls.Add(_txtLoginPassword);
+        tabLogin.Controls.Add(btnLogin);
+
+        // --- TAB 2: REGISTER ---
+        var tabRegister = new TabPage("Creare Cont");
+        tabRegister.BackColor = Color.FromArgb(35, 35, 52);
+
+        var lblRName = new Label { Text = "Nume Complet:", Location = new Point(20, 15), AutoSize = true, ForeColor = Color.LightGray };
+        _txtRegName = new TextBox { Location = new Point(20, 35), Width = 340, BackColor = Color.FromArgb(50, 50, 70), ForeColor = Color.White };
+
+        var lblREmail = new Label { Text = "Email:", Location = new Point(20, 70), AutoSize = true, ForeColor = Color.LightGray };
+        _txtRegEmail = new TextBox { Location = new Point(20, 90), Width = 340, BackColor = Color.FromArgb(50, 50, 70), ForeColor = Color.White };
+
+        var lblRPass = new Label { Text = "Parolă:", Location = new Point(20, 125), AutoSize = true, ForeColor = Color.LightGray };
+        _txtRegPassword = new TextBox { Location = new Point(20, 145), Width = 340, PasswordChar = '•', BackColor = Color.FromArgb(50, 50, 70), ForeColor = Color.White };
+
+        var btnRegister = new Button
+        {
+            Text = "Înregistrează-te",
+            Location = new Point(20, 190),
+            Width = 340,
+            Height = 40,
+            BackColor = Color.FromArgb(46, 204, 113),
+            ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat,
+            Font = new Font("Segoe UI", 10F, FontStyle.Bold)
+        };
+        btnRegister.Click += async (s, e) => await ExecuteRegisterAsync();
+
+        tabRegister.Controls.Add(lblRName);
+        tabRegister.Controls.Add(_txtRegName);
+        tabRegister.Controls.Add(lblREmail);
+        tabRegister.Controls.Add(_txtRegEmail);
+        tabRegister.Controls.Add(lblRPass);
+        tabRegister.Controls.Add(_txtRegPassword);
+        tabRegister.Controls.Add(btnRegister);
+
+        _tabControl.TabPages.Add(tabLogin);
+        _tabControl.TabPages.Add(tabRegister);
+
+        // --- BUTON CONTINUĂ FĂRĂ CONT ---
+        var btnGuest = new Button
+        {
+            Text = "🛒 Continuă fără cont (Vizitator)",
+            Dock = DockStyle.Bottom,
+            Height = 45,
+            BackColor = Color.FromArgb(230, 126, 34),
             ForeColor = Color.White,
             FlatStyle = FlatStyle.Flat,
             Font = new Font("Segoe UI", 10F, FontStyle.Bold),
             Cursor = Cursors.Hand
         };
-        btnLogin.FlatAppearance.BorderSize = 0;
-        btnLogin.Click += (s, e) => AttemptLogin();
+        btnGuest.Click += (s, e) =>
+        {
+            Mode = AccessMode.Guest;
+            UserEmail = "anonim@client.ro";
+            DialogResult = DialogResult.OK;
+        };
 
-        Controls.Add(lblTitle);
-        Controls.Add(lblRole);
-        Controls.Add(_cboRole);
-        Controls.Add(lblEmail);
-        Controls.Add(_txtEmail);
-        Controls.Add(lblPassword);
-        Controls.Add(_txtPassword);
-        Controls.Add(btnLogin);
+        Controls.Add(_tabControl);
+        Controls.Add(btnGuest);
     }
 
-    private void AttemptLogin()
+    private async Task ExecuteLoginAsync()
     {
-        if (string.IsNullOrWhiteSpace(_txtEmail.Text))
+        var res = await _apiService.LoginAsync(new LoginDto { Email = _txtLoginEmail.Text, Password = _txtLoginPassword.Text });
+        if (res.Success)
         {
-            MessageBox.Show("Introdu adresa de email!", "Validare", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return;
-        }
-
-        if (_cboRole.SelectedIndex == 1)
-        {
-            if (_txtPassword.Text != "admin")
-            {
-                MessageBox.Show("Parolă incorectă pentru Administrator!", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            SelectedRole = UserRole.Admin;
-            ApiService.SetJwtToken("ADMIN_MOCK_TOKEN");
+            ApiService.SetJwtToken(res.Token);
+            UserEmail = res.Email;
+            Mode = res.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase) ? AccessMode.Admin : AccessMode.ClientAuthenticated;
+            DialogResult = DialogResult.OK;
         }
         else
         {
-            SelectedRole = UserRole.Client;
+            MessageBox.Show(res.ErrorMessage, "Eroare Autentificare", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
 
-        UserEmail = _txtEmail.Text.Trim();
-        DialogResult = DialogResult.OK;
+    private async Task ExecuteRegisterAsync()
+    {
+        var res = await _apiService.RegisterAsync(new RegisterDto
+        {
+            FullName = _txtRegName.Text,
+            Email = _txtRegEmail.Text,
+            Password = _txtRegPassword.Text
+        });
+
+        if (res.Success)
+        {
+            ApiService.SetJwtToken(res.Token);
+            UserEmail = res.Email;
+            Mode = AccessMode.ClientAuthenticated;
+            MessageBox.Show("Contul a fost creat cu succes!", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            DialogResult = DialogResult.OK;
+        }
+        else
+        {
+            MessageBox.Show(res.ErrorMessage, "Eroare Înregistrare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

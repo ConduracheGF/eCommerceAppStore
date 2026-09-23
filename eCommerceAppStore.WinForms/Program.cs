@@ -19,15 +19,18 @@ static class Program
                 break;
             }
 
-            if (loginForm.SelectedRole == UserRole.Admin)
+            if (loginForm.Mode == AccessMode.Admin)
             {
                 Application.Run(new MainForm());
             }
             else
             {
+                // Modul Client Autentificat sau Client Fără Cont (Vizitator)
                 var clientForm = new Form
                 {
-                    Text = "Store Client - Cumpărături Online",
+                    Text = loginForm.Mode == AccessMode.ClientAuthenticated
+                        ? $"Store Client - Autentificat ({loginForm.UserEmail})"
+                        : "Store Client - Vizitator fără cont",
                     Size = new Size(950, 650),
                     StartPosition = FormStartPosition.CenterScreen,
                     BackColor = Color.FromArgb(30, 30, 46)

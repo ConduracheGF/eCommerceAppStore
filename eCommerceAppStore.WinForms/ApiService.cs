@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using eCommerceAppStore.Api.DataTransferObject;
 
 namespace eCommerceAppStore.WinForms;
 
@@ -128,6 +129,50 @@ public class ApiService
         catch (Exception ex)
         {
             return (false, ex.Message);
+        }
+    }
+
+    public async Task<AuthResponse> LoginAsync(LoginDto dto)
+    {
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/auth/login", dto);
+            var result = await response.Content.ReadFromJsonAsync<AuthResponse>();
+            return result ?? new AuthResponse
+            {
+                Success = false,
+                ErrorMessage = "Raspuns invalid de la server."
+            };
+        }
+        catch (Exception e)
+        {
+            return new AuthResponse
+            {
+                Success = false,
+                ErrorMessage = e.Message
+            };
+        }
+    }
+
+    public async Task<AuthResponse> RegisterAsync(RegisterDto dto)
+    {
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/auth/register", dto);
+            var result = await response.Content.ReadFromJsonAsync<AuthResponse>();
+            return result ?? new AuthResponse
+            {
+                Success = false,
+                ErrorMessage = "Raspuns invalid de la server."
+            };
+        }
+        catch(Exception e)
+        {
+            return new AuthResponse
+            {
+                Success = false,
+                ErrorMessage = e.Message
+            };
         }
     }
 }
