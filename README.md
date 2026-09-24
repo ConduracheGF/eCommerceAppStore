@@ -136,6 +136,8 @@ Interfața de autentificare permite utilizatorului să introducă:
 
 După autentificare, backend-ul generează un **JWT Token**, iar aplicația desktop îl utilizează pentru cererile către endpoint-urile protejate.
 
+![Interfata Grafica Login Cont User](./Images/Login.png)
+
 ### Înregistrare
 
 Pentru crearea unui cont sunt disponibile câmpurile:
@@ -145,6 +147,8 @@ Pentru crearea unui cont sunt disponibile câmpurile:
 * Parolă.
 
 Datele sunt transmise către endpoint-ul de înregistrare al API-ului.
+
+![Interfata Grafica Creare Cont User](./Images/CreareCont.png)
 
 ### Autorizare
 
@@ -184,6 +188,8 @@ La ștergerea unui produs este solicitată confirmarea utilizatorului.
 
 ---
 
+![Interfata Grafica Gestionare Stocuri Admin](./Images/Produse_Admin.png)
+
 # 🛒 Gestiune Comenzi
 
 Modulul **Comenzi** permite administratorului să vizualizeze comenzile existente.
@@ -213,6 +219,8 @@ La plasarea unei comenzi, backend-ul:
 
 ---
 
+![Interfata Grafica Gestionare Comenzi Admin](./Images/Procesare_Comenzi_Admin.png)
+
 # 🛍️ Interfața Clientului
 
 Utilizatorii autentificați ca **Client** pot vizualiza produsele disponibile.
@@ -233,6 +241,8 @@ Total = Preț unitar × Cantitate
 ```
 
 Comanda este transmisă către backend prin endpoint-ul REST corespunzător.
+
+![Interfata Grafica Panou Produse Disponibile pentru User](./Images/Comenzi_client.png)
 
 ---
 
@@ -268,6 +278,9 @@ Monitoare Gaming   → Stoc Optim
 ```
 
 ---
+
+![Rapoarte Eliberate pentru Analiza Datelor](./Images/Rapoarte_Admin.png)
+
 
 # 📈 Grafice
 
@@ -682,16 +695,8 @@ Autentificare / Înregistrare
 
 ---
 
-![Diagrama de Functionalitati definita din workflow-ul proiectului](https://github.com/ConduracheGF/eCommerceAppStore/Images/DiagramaUser.png)
-![Diagrama de Secvente definita din workflow-ul proiectului](https://github.com/ConduracheGF/eCommerceAppStore/Images/DiagramaClase.png)
-
-# Imagini Interfata
-![Interfata Grafica Creare Cont User](https://github.com/ConduracheGF/eCommerceAppStore/Images/CreareCont.png)
-![Interfata Grafica Login Cont User](https://github.com/ConduracheGF/eCommerceAppStore/Images/Login.png)
-![Interfata Grafica Panou Produse Disponibile pentru User](https://github.com/ConduracheGF/eCommerceAppStore/Images/Comenzi_client.png)
-![Interfata Grafica Gestionare Comenzi Admin](https://github.com/ConduracheGF/eCommerceAppStore/Images/Procesare_Comenzi_Admin.png)
-![Interfata Grafica Gestionare Stocuri Admin](https://github.com/ConduracheGF/eCommerceAppStore/Images/Produse_Admin.png)
-![Rapoarte Eliberate pentru Analiza Datelor](https://github.com/ConduracheGF/eCommerceAppStore/Images/Rapoarte_Admin.png)
+![Diagrama de Functionalitati definita din workflow-ul proiectului](./Images/DiagramaUser.png)
+![Diagrama de Secvente definita din workflow-ul proiectului](./Images/DiagramaSecvente.png)
 
 # 📌 Concluzie
 
