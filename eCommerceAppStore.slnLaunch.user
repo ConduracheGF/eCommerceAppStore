@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "eCommerceAppStore.Api\\eCommerceAppStore.Api.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "eCommerceAppStore.WinForms\\eCommerceAppStore.WinForms.csproj",
+        "Action": "Start",
+        "DebugTarget": "eCommerceAppStore.WinForms"
+      }
+    ]
+  }
+]

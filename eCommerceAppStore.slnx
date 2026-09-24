@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="eCommerceAppStore.Api/eCommerceAppStore.Api.csproj" />
+  <Project Path="eCommerceAppStore.WinForms/eCommerceAppStore.WinForms.csproj" />
+</Solution>

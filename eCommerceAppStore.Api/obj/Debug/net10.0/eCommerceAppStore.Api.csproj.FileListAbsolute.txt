@@ -169,3 +169,4 @@ C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.Api\bin\
 C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.Api\obj\Debug\net10.0\eCommerceAppStore.Api.sourcelink.json
 C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.Api\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.Api\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
+C:\Users\Condurache Gabriel\Desktop\eCommerceAppStore\eCommerceAppStore.Api\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

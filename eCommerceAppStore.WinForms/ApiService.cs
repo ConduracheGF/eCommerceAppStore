@@ -28,7 +28,7 @@ public class ApiService
 {
     private static readonly HttpClient _httpClient = new()
     {
-        BaseAddress = new Uri("http://localhost:5113/")
+        BaseAddress = new Uri("http://localhost:5000/")
     };
 
     public static void SetJwtToken(string token)
