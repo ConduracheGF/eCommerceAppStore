@@ -148,7 +148,7 @@ Pentru crearea unui cont sunt disponibile câmpurile:
 
 Datele sunt transmise către endpoint-ul de înregistrare al API-ului.
 
-![Interfata Grafica Creare Cont User](./Images/CreareCont.png)
+![Interfata Grafica Creare Cont User](./Images/Creare_Cont.png)
 
 ### Autorizare
 
