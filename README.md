@@ -722,4 +722,6 @@ Proiectul integrează:
 * grafică **GDI+**;
 * testare automată cu **xUnit**.
 
+![](./Images/DevStructure.png)
+
 Separarea dintre frontend, API și baza de date permite dezvoltarea independentă a componentelor și oferă o structură potrivită pentru extinderea ulterioară a sistemului.
