@@ -532,7 +532,7 @@ eCommerceAppStore/
 
 ---
 
-![Diagrama de Clase definita din structura proiectului](https://github.com/ConduracheGF/eCommerceAppStore/Images/DiagramaClase.png)
+![Diagrama de Clase definita din structura proiectului](./Images/DiagramaClase.png)
 
 # 🧪 Testare
 
