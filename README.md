@@ -532,6 +532,8 @@ eCommerceAppStore/
 
 ---
 
+![Diagrama de Clase definita din structura proiectului](https://github.com/ConduracheGF/eCommerceAppStore/Images/DiagramaClase.png)
+
 # 🧪 Testare
 
 Proiectul include o suită de teste unitare realizată folosind **xUnit**.
@@ -679,6 +681,17 @@ Autentificare / Înregistrare
 ```
 
 ---
+
+![Diagrama de Functionalitati definita din workflow-ul proiectului](https://github.com/ConduracheGF/eCommerceAppStore/Images/DiagramaUser.png)
+![Diagrama de Secvente definita din workflow-ul proiectului](https://github.com/ConduracheGF/eCommerceAppStore/Images/DiagramaClase.png)
+
+# Imagini Interfata
+![Interfata Grafica Creare Cont User](https://github.com/ConduracheGF/eCommerceAppStore/Images/CreareCont.png)
+![Interfata Grafica Login Cont User](https://github.com/ConduracheGF/eCommerceAppStore/Images/Login.png)
+![Interfata Grafica Panou Produse Disponibile pentru User](https://github.com/ConduracheGF/eCommerceAppStore/Images/Comenzi_client.png)
+![Interfata Grafica Gestionare Comenzi Admin](https://github.com/ConduracheGF/eCommerceAppStore/Images/Procesare_Comenzi_Admin.png)
+![Interfata Grafica Gestionare Stocuri Admin](https://github.com/ConduracheGF/eCommerceAppStore/Images/Produse_Admin.png)
+![Rapoarte Eliberate pentru Analiza Datelor](https://github.com/ConduracheGF/eCommerceAppStore/Images/Rapoarte_Admin.png)
 
 # 📌 Concluzie
 
