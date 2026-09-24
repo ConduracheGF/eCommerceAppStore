@@ -695,8 +695,15 @@ Autentificare / Înregistrare
 
 ---
 
+## Use-Case Diagram
 ![Diagrama de Functionalitati definita din workflow-ul proiectului](./Images/DiagramaUser.png)
+
+---
+
+## Workflow
 ![Diagrama de Secvente definita din workflow-ul proiectului](./Images/DiagramaSecvente.png)
+
+---
 
 # 📌 Concluzie
 
